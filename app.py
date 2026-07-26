@@ -14,21 +14,29 @@ def load_artifacts():
 
 model, encoder = load_artifacts()
 
+# ── UI ────────────────────────────────────────────────────────────────────────
 
 st.title("Customer Renewal Probability Predictor")
 st.write("Enter customer attributes to predict the likelihood of subscription renewal.")
 
 st.subheader("2022 Activity")
-total_num_sessions              = st.slider("Total # of Sessions", min_value=0, max_value=200, value=10)
-gross_total_session_length      = st.slider("Gross Total Session Length (minutes)", min_value=0, max_value=10000, value=500)
-active_days                     = st.slider("Active Days", min_value=0, max_value=5, value=3)
-active_quarters                 = st.slider("Active Quarters", min_value=0, max_value=4, value=2)
-avg_sessions_per_active_quarter = st.slider("Avg Sessions per Active Quarter", min_value=0.0, max_value=100.0, value=5.0, step=0.5)
+
+# Number inputs — open-ended/large ranges, typing an exact value is easier than dragging
+total_num_sessions = st.number_input("Total # of Sessions", min_value=0, max_value=1000, value=10)
+gross_total_session_length = st.number_input("Gross Total Session Length (minutes)", min_value=0, max_value=50000, value=500)
+avg_sessions_per_active_quarter = st.number_input("Avg Sessions per Active Quarter", min_value=0.0, max_value=500.0, value=5.0, step=0.5)
+
+# Sliders — small, bounded, intuitive ranges
+active_days = st.slider("Active Days", min_value=0, max_value=5, value=3)
+active_quarters = st.slider("Active Quarters", min_value=0, max_value=4, value=2)
 
 st.subheader("Demographics")
-age                 = st.slider("Age", min_value=18, max_value=100, value=35)
-tech_comfort_score  = st.slider("Tech Comfort Score", min_value=1, max_value=10, value=5)
 
+# Sliders — small, bounded, intuitive ranges
+age = st.slider("Age", min_value=18, max_value=100, value=35)
+tech_comfort_score = st.slider("Tech Comfort Score", min_value=1, max_value=10, value=5)
+
+# Select-slider — categories with a natural low-to-high order
 income_level = st.select_slider(
     "Income Level",
     options=["Low", "Medium", "High", "Very High"],
@@ -39,10 +47,12 @@ education = st.select_slider(
     options=["High School", "Other", "Graduate", "Post-Graduate"],
     value="Graduate"
 )
-device_type = st.select_slider(
+
+# Dropdown — no natural order between categories
+device_type = st.selectbox(
     "Device Type",
     options=["Desktop-only", "Mobile-only", "Multi-device"],
-    value="Multi-device"
+    index=2
 )
 
 if st.button("Predict"):
