@@ -19,7 +19,6 @@ model, encoder = load_artifacts()
 st.title("Customer Renewal Probability Predictor")
 st.write("Enter customer attributes to predict the likelihood of subscription renewal.")
 
-st.subheader("2022 Activity")
 
 # Number inputs — open-ended/large ranges, typing an exact value is easier than dragging
 total_num_sessions = st.number_input("Total # of Sessions", min_value=0, max_value=1000, value=10)
