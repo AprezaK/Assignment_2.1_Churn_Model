@@ -57,11 +57,11 @@ device_type = st.selectbox(
 if st.button("Predict"):
 
     # Build categorical DataFrame — column names/order must match encoder exactly
-    raw = pd.DataFrame([{
-        'EDUCATION':    education,
-        'INCOME_LEVEL': income_level,
-        'DEVICE_TYPE':  device_type,
-    }])
+ raw = pd.DataFrame([{
+    'INCOME_LEVEL': income_level,
+    'EDUCATION':    education,
+    'DEVICE_TYPE':  device_type,
+}])[encoder.feature_names_in_]
 
     # Apply the saved encoder (transform only — never fit_transform)
     encoded = encoder.transform(raw)
