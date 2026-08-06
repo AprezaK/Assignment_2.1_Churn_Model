@@ -15,10 +15,8 @@ def load_artifacts():
 model, encoder = load_artifacts()
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-
 st.title("Customer Renewal Probability Predictor")
 st.write("Enter customer attributes to predict the likelihood of subscription renewal.")
-
 
 # Number inputs — open-ended/large ranges, typing an exact value is easier than dragging
 total_num_sessions = st.number_input("Total # of Sessions", min_value=0, max_value=1000, value=10)
@@ -55,13 +53,14 @@ device_type = st.selectbox(
 )
 
 if st.button("Predict"):
-
-    # Build categorical DataFrame — column names/order must match encoder exactly
- raw = pd.DataFrame([{
-    'INCOME_LEVEL': income_level,
-    'EDUCATION':    education,
-    'DEVICE_TYPE':  device_type,
-}])[encoder.feature_names_in_]
+    # Build categorical DataFrame — reindexed to encoder.feature_names_in_ so the
+    # column order always matches what the encoder was fit on, regardless of the
+    # order the dict below is written in.
+    raw = pd.DataFrame([{
+        'INCOME_LEVEL': income_level,
+        'EDUCATION':    education,
+        'DEVICE_TYPE':  device_type,
+    }])[encoder.feature_names_in_]
 
     # Apply the saved encoder (transform only — never fit_transform)
     encoded = encoder.transform(raw)
